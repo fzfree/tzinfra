@@ -1,0 +1,11 @@
+http://sspanel.localhost {
+    log
+
+    reverse_proxy sspanel
+}
+
+http://phpmyadmin.localhost {
+    log
+
+    reverse_proxy phpmyadmin
+}

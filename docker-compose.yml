@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+
+  caddy:
+    image: caddy
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy:/etc/caddy
+
+  sspanel:
+    image: runreadygo/sspaneluim:2022.11
+    container_name: sspanel
+    restart: always
+    volumes:
+      - ./sspaneluim/.config.php:/var/www/config/.config.php
+
+  mariadb:
+    image: mariadb:10.8
+    container_name: mariadb
+    restart: always
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./data/secrets:/run/secrets
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/mysql-root
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      - PMA_HOST=mariadb:3306
